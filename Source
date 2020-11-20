@@ -1,0 +1,91 @@
+;Code By rvlocker
+;;;;;;;;guardiran.org
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=..\Downloads\defend-encryption-cyan-1_0.ico
+#AutoIt3Wrapper_UseX64=n
+#AutoIt3Wrapper_Res_Comment=Code by rvlocker --> This is a program for text encryption
+#AutoIt3Wrapper_Res_Description=Text encryption
+#AutoIt3Wrapper_Run_Au3Stripper=y
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+#include <Crypt.au3>
+#include <ButtonConstants.au3>
+#include <EditConstants.au3>
+#include <GUIConstantsEx.au3>
+#include <StaticConstants.au3>
+#include <TabConstants.au3>
+#include <WindowsConstants.au3>
+#Region ### START Koda GUI section ### Form=
+Global $Form1 = GUICreate("EnCrypt Text ! code by---> rvlocker", 570, 256, 302, 173)
+GUISetBkColor(0x008000)
+Global $Tab1 = GUICtrlCreateTab(8, 0, 553, 249)
+Global $enCryptText = GUICtrlCreateTabItem("EnCrypt")
+Global $Edit1 = GUICtrlCreateEdit("", 48, 32, 265, 73)
+GUICtrlSetData(-1, "")
+Global $Button1 = GUICtrlCreateButton("SetPassword", 328, 48, 121, 33)
+GUICtrlSetFont(-1, 8, 400, 0, "Broadway")
+GUICtrlSetColor(-1, 0x800000)
+GUICtrlSetBkColor(-1, 0x00FFFF)
+Global $Edit2 = GUICtrlCreateEdit("", 48, 136, 265, 73)
+GUICtrlSetData(-1, "")
+Global $Button2 = GUICtrlCreateButton("Encrypt", 328, 160, 121, 33)
+GUICtrlSetFont(-1, 8, 400, 0, "Elephant")
+GUICtrlSetColor(-1, 0x800080)
+GUICtrlSetBkColor(-1, 0x99B4D1)
+Global $deCryptText = GUICtrlCreateTabItem("DeCrypt")
+Global $Edit3 = GUICtrlCreateEdit("", 48, 40, 265, 73)
+GUICtrlSetData(-1, "")
+Global $Button3 = GUICtrlCreateButton("YourPassword", 328, 56, 121, 33)
+GUICtrlSetFont(-1, 8, 800, 0, "Sitka Text")
+GUICtrlSetColor(-1, 0x0000FF)
+GUICtrlSetBkColor(-1, 0x800080)
+Global $Edit4 = GUICtrlCreateEdit("", 48, 136, 265, 73)
+GUICtrlSetData(-1, "")
+Global $Button4 = GUICtrlCreateButton("DeCrypt", 328, 152, 121, 33)
+GUICtrlSetFont(-1, 8, 800, 0, "Ravie")
+GUICtrlSetColor(-1, 0x008080)
+Global $Help = GUICtrlCreateTabItem("Help")
+Global $Label1 = GUICtrlCreateLabel("Hello, to use the program", 144, 32, 219, 22)
+GUICtrlSetFont(-1, 11, 400, 2, "Showcard Gothic")
+GUICtrlSetColor(-1, 0xFF0000)
+GUICtrlSetBkColor(-1, 0xFFFFFF)
+Global $Label2 = GUICtrlCreateLabel("first enter your password ", 128, 56, 248, 24)
+GUICtrlSetFont(-1, 12, 400, 2, "Showcard Gothic")
+GUICtrlSetBkColor(-1, 0xFFFFFF)
+Global $Label3 = GUICtrlCreateLabel("guardiran.org", 136, 160, 253, 30)
+GUICtrlSetFont(-1, 16, 400, 0, "Wide Latin")
+GUICtrlSetColor(-1, 0x00FF00)
+GUICtrlSetBkColor(-1, 0xFFFFFF)
+Global $Label4 = GUICtrlCreateLabel("and then your text for encryption", 112, 96, 289, 22)
+GUICtrlSetFont(-1, 11, 400, 0, "Showcard Gothic")
+GUICtrlSetColor(-1, 0xFF00FF)
+GUICtrlSetBkColor(-1, 0xFFFFFF)
+GUICtrlCreateTabItem("")
+GUISetState(@SW_SHOW)
+#EndRegion ### END Koda GUI section ###
+
+While 1
+	$nMsg = GUIGetMsg()
+	Switch $nMsg
+		Case $GUI_EVENT_CLOSE
+			Exit
+		Case $Button1
+			Global $PasswordFromUser1 = GUICtrlRead($Edit1)
+		Case $Button2
+			Global $TextFromUser1 = GUICtrlRead($Edit2)
+			$encData = _Crypt_EncryptData($TextFromUser1,$PasswordFromUser1,$CALG_AES_256)
+			MsgBox(64,"",$encData)
+			$saveLocation = FileSaveDialog("Encrypt File ",@ScriptDir,"Text Files (*.txt)",16)
+			FileWrite($saveLocation,$encData)
+		Case $Button3
+			Global $PasswordFromUser2 = GUICtrlRead($Edit3)
+		Case $Button4
+			$deCryptData = _Crypt_DecryptData($encData,$PasswordFromUser2,$CALG_AES_256)
+			MsgBox(64,"",BinaryToString($encData))
+			$saveLocation2 = FileSaveDialog("Decrypt File ",@ScriptDir,"Text Files (*.txt)",16)
+			FileWrite($saveLocation2,$deCryptData)
+	EndSwitch
+WEnd
+
+
+
+
